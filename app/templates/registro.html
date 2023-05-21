@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+    <nav class="menu">
+        <a href="/"><label for="" class="logo">HARMONY</label></a>
+        <ul class="menu-opc">
+        </ul>
+    </nav>
+
+    <main class="d-flex">
+        <div class="container-fluid row m-0 vh-100 justify-content-end align-items-center">
+            <div class="card shadow w-50">
+                <div class="card-body">
+                    <form action="/registrarse" method="GERT">
+                        <h3 class="harmony">HARMONY</h3>
+
+                        <h4 class="subtitulo">Regístrate y crea un espacio para tu música</h4>
+                        <br>
+
+                        <input type="nombre" placeholder="Nombre de tu grupo" class="form-control mb-3" name="nombre">
+
+                        <input type="email" placeholder="Correo electrónico" class="form-control mb-3" name="email">
+
+                        <input type="contraseña" placeholder="Contraseña" class="form-control mb-3" name="contraseña">
+
+                        {% if message %}
+
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error</strong>{{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-dark w-100">Registrarse</button>
+                    </form>
+                                    
+                    <br>
+                    <p class="text-center"> ¿Tienes cuenta? <td><a href="{{url_for('routes.home')}}">Inicia sesión</a></td></p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    
+</body>
+</html>
+
