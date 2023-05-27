@@ -35,3 +35,7 @@ def registrarse():
 @app.route('/registrado', methods=["POST", "GET"])
 def registrado():
     return render_template("registrado.html")
+
+@app.route('/registro', methods=["POST", "GET"])
+def registro():
+    return render_template("registro.html")
