@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="shortcut icon" href="/static/img/favicon.png" type="image/x-icon">
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<body class="ambos">
+
+    
+    <nav class="menu">
+        <a href="/"><label for="" class="logo">HARMONY</label></a>
+    </nav>
+    
+    <div class="inicio">
+        <h1> BIENVENIDO {{ session['name'] }}</h1>
+        <h2>Te has registrado como Banda y Solista</h2>
+        <button class="Inicio button"><a href="/blog">Continuar</a></button><button ><a href="/layout">Salir</a></button>
+    </div>
+    
+    
+</body>
+</html>
+

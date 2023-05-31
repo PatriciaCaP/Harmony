@@ -1,0 +1,34 @@
+{% extends 'layout.html' %} 
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+<main class="d-flex">
+    <div class="container-fluid row m-0 vh-100 justify-content-end align-items-center">
+         <div class="card shadow w-50">
+            <div class="card-body">
+            <form  action="/login" method="POST">
+
+                
+                <h1 class="harmony">HARMONY</h1><br>
+
+            
+                <input type="email" placeholder="Correo electrónico" class="form-control mb-3" name="email">
+
+                <input type="password" placeholder="Contraseña" class="form-control mb-3" name="password">
+                
+                
+                    <button class="btn btn-dark w-100">Iniciar sesión</button>
+
+                     
+            </form>
+            </div>
+            <p class="text-center"> ¿No tienes cuenta? <td><a href="/registro">Regístrate</a></td></p>
+            </div>
+            </div>
+</main>
+
+ 
+
+
+{% endblock %}

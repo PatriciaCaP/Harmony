@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Página principal</title>
+</head>
+<body>
+    <h1>Bienvenido, {{ session['name'] }}</h1>
+    <p>Tu correo electrónico: {{ session['email'] }}</p>
+
+    <h2>Últimas publicaciones:</h2>
+        <ul>
+        {% for blog in blogs %}
+            <li>
+                <h3>{{blog.titulo }}</h3>
+                <p>{{ blog.contenido }}</p>
+                <p>Fecha: {{blog.fecha }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+  
+    <a href="/layout">Cerrar sesión</a>
+</body>
+</html>

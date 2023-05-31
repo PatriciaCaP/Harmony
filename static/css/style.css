@@ -1,0 +1,214 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+.menu {
+    background: #333;
+    height: 75px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-family:'Courier New', Courier, monospace;
+  }
+
+a{
+    text-decoration: none;
+}
+
+.harmony {
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-align: center;
+  }
+
+.logo{
+    cursor: pointer;
+    font-size: 34px;
+    padding: 0 80px;
+    font-weight: bold;
+    color: white;
+    
+}
+
+.barraInicio{
+    display: flex;
+    list-style: none;
+    margin-right: 30px;
+}
+.barraInicio li{
+    border-radius: 3px;
+    margin: 0 5px;
+}
+.barraInicio li a{
+    padding: 7px 13px;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    color: white;
+}
+
+.barraInicio li :hover{
+    background: rgb(166, 118, 184);
+    transition: .4s;
+    color: black;
+}
+
+.form{
+    width: 300px;
+    height: 450px;
+    box-sizing: border-box;
+    padding: 70px 0px;
+    border: 0px solid black;
+    text-align: center;
+    margin-left: 21%;
+}
+
+.form label{
+    margin: 0;
+    padding: -15px -40px;
+    font-weight: bold;
+    display: block;
+    font-size: 15px;
+}
+
+.form-input{
+    height: 35px;
+    width: 92%;
+    border: 2px solid rgba(201, 195, 195, 0.76);
+    border-radius: 5px;
+}
+
+.form button, .entrada button{
+    border: none;
+    outline: none;
+    color: white;
+    height: 40px;
+    width: 90px;
+    background: #000000;
+    font-size: 15px;
+    margin-top: 20px;
+    border-radius: 5px;
+    list-style: none;
+    cursor: pointer;
+    
+}
+
+
+.form-titulo {
+
+    text-align: center;
+}
+
+  
+.registro{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+    padding: 15px;
+    margin-left: 20%;
+}
+
+/* homes*/
+
+body:before {
+    content: "";
+    width: 50%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-image: url('/static/img/background.jpg');
+    background-size: cover;
+    opacity: 0.6;
+    z-index: -1;
+  }
+
+  .entrada{
+    color: #1e1c1d;
+    font-size:x-large;
+    margin-top: 200px;
+    text-align: center;
+  
+
+}
+.inicio{
+    color: #ffffff;
+    font-size:small;
+    margin-top: 200px;
+    text-align: center;
+    padding: 10px 10px;
+    background: rgba(0, 0, 0, 0.448);
+    margin-top: 100px;
+    font-weight: bold;
+    font-family:'Courier New', Courier, monospace;
+}
+
+.inicio button{
+    border: none;
+    outline: none;
+    color: white;
+    height: 40px;
+    width: 90px;
+    background: #ffffff;
+    font-size: 15px;;
+    margin-top: 20px;
+    border-radius: 5px;
+    text-decoration:dashed;
+    cursor: pointer;
+    text-align: center;
+}
+
+
+.banda:before {
+    content: "";
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    background-image: url('/static/img/banda.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+    z-index: -1;
+}
+
+.solista:before {
+    content: "";
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    background-image: url('/static/img/solista.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+    z-index: -1;
+}
+  
+.ambos:before {
+    content: "";
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    background-image: url('/static/img/ambos.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+    z-index: -1;
+}
+    
+.create:before {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+  }

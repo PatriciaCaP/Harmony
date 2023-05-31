@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% block title %} Registro {% endblock %}
+
+{% block content %}
+
+<main class="d-flex">
+    <div class="container-fluid row m-0 vh-100 justify-content-end align-items-center">
+         <div class="card shadow w-50">
+            <div class="card-body">
+             <form action="/registro" method="POST">
+
+                <h1 class="harmony">HARMONY</h1><br>
+
+                    <input type="text" placeholder="Nombre" class="form-control mb-3" name="name">
+              
+                    <label>¿Banda o Solista?:</label>
+                    <select class="form-control mb-3" name= "tipo">
+                        <option value="0">           </option>
+                        {% for tip in tipo %}
+                        <option value="{{tip.id_tip_usu}}">{{ tip.nom_tip_usu }}</option>
+                        {% endfor %}
+                    </select>
+           
+                    <input type="email" placeholder="Correo electrónico" class="form-control mb-3" name="email">
+        
+                    <input type="password" placeholder="Contraseña" class="form-control mb-3" name="password">
+               
+                    <button class="btn btn-dark w-100">Registrar</button>
+            
+
+            </form>
+            </div>
+            <p class="text-center"> ¿Tienes cuenta? <td><a href="/login">Iniciar sesión</a></td></p>
+           </div>
+           </div>
+           </main> 
+
+
+
+{% endblock %}
