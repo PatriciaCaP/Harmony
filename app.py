@@ -32,13 +32,16 @@ def home():
         "La música te lleva a un lugar donde siempre has querido estar. - John Mayer",
         "La música es mi religión. - Jimi Hendrix",
         "La música es el alimento del amor. - Elvis Presley",
-        "La música es el único amor verdadero. - Jack White"
+        "La música es el único amor verdadero. - Jack White",
+
     
     ]
     frase_aleatoria = random.choice(frases)
     return render_template('principal.html', frase=frase_aleatoria)
 
-@app.route('/blog', methods=['GET', 'POST'])
+
+#######################################################################################3
+@app.route('/escribe_blog', methods=['GET', 'POST'])
 def escribir_blog():
     if 'email' not in session:
         return redirect(url_for('login'))
@@ -49,28 +52,29 @@ def escribir_blog():
         id = request.form['id']
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO blogs (titulo, contenido, fecha, id) VALUES (%s, %s, NOW(), %s)",(titulo, contenido, id))
+        cur.execute("INSERT INTO blogs (titulo, contenido, fecha, id) VALUES (%s, %s, NOW(), %s)",(titulo, contenido, session[id]))
         mysql.connection.commit()
         cur.close()
 
         return redirect(url_for('home'))
     else:
-        return render_template('blog.html')
-
+        return render_template('create.html')
+    
 @app.route('/blogs')
 def ver_blogs():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT blogs.*, usuarios.name AS nombre_autor FROM blogs INNER JOIN usuarios ON blogs.id = usuarios.id")
+    cur.execute("SELECT usuarios.name AS nombre_autor FROM blogs INNER JOIN usuarios ON blogs.id = usuarios.id")
     blogs = cur.fetchall()
     cur.close()
 
     return render_template('blog.html', blogs=blogs)
  
+ #########################################################################################################
 
 @app.route('/layout', methods = ["GET", "POST"])
 def layout():
     session.clear()
-    return render_template("contenido.html")
+    return render_template("principal.html")
 
 
 @app.route('/login', methods= ["GET", "POST"])

@@ -14,9 +14,12 @@
                 <h3>{{blog.titulo }}</h3>
                 <p>{{ blog.contenido }}</p>
                 <p>Fecha: {{blog.fecha }}</p>
+                <p> Autor : {{blog.id}}</p>    
             </li>
         {% endfor %}
         </ul>
+
+    <a href="/escribe_blog">Publicar</a>  
   
     <a href="/layout">Cerrar sesión</a>
 </body>
