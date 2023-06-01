@@ -40,36 +40,42 @@ def home():
     return render_template('principal.html', frase=frase_aleatoria)
 
 
-#######################################################################################3
+@app.route('/blogs')
+def ver_blogs():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT blogs.id_blog, blogs.titulo, blogs.contenido, blogs.fecha, usuarios.name AS autor FROM blogs INNER JOIN usuarios ON blogs.id = usuarios.id")
+    blogs = cur.fetchall()
+    cur.close()
+
+    return render_template('blogs.html', blogs=blogs)
+
 @app.route('/escribe_blog', methods=['GET', 'POST'])
 def escribir_blog():
+
+    notificacion = Notify()
+
     if 'email' not in session:
         return redirect(url_for('login'))
+    
+    
 
     if request.method == 'POST':
         titulo = request.form['titulo']
         contenido = request.form['contenido']
-        id = request.form['id']
+        
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO blogs (titulo, contenido, fecha, id) VALUES (%s, %s, NOW(), %s)",(titulo, contenido, session[id]))
+        cur.execute("INSERT INTO blogs (titulo, contenido, fecha) VALUES (%s, %s, NOW())",(titulo, contenido,))
         mysql.connection.commit()
+        notificacion.title = "Publicado con éxito"
+        notificacion.message="Has publicado en Harmony"
+        notificacion.send()
         cur.close()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('ver_blogs'))
     else:
         return render_template('create.html')
-    
-@app.route('/blogs')
-def ver_blogs():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT usuarios.name AS nombre_autor FROM blogs INNER JOIN usuarios ON blogs.id = usuarios.id")
-    blogs = cur.fetchall()
-    cur.close()
 
-    return render_template('blog.html', blogs=blogs)
- 
- #########################################################################################################
 
 @app.route('/layout', methods = ["GET", "POST"])
 def layout():
@@ -91,7 +97,7 @@ def login():
         user = cur.fetchone()
         cur.close()
 
-        if len(user)>0:
+        if user is not None:
             if password == user["password"]:
                 session['name'] = user['name']
                 session['email'] = user['email']
@@ -116,9 +122,24 @@ def login():
             notificacion.send()
             return render_template("login.html")
     else:
-        
-        return render_template("login.html")
+        if 'email' in session:
+            # Si ya hay una sesión iniciada, redirigir al usuario a la página de inicio correspondiente
+            tipo = session['tipo']
+            if tipo == 1:
+                return render_template("banda/home.html")
+            elif tipo == 2:
+                return render_template("solista/homeTwo.html")
+            elif tipo == 3:
+                return render_template("ambos/homeThree.html")
 
+        return render_template("login.html")
+    
+
+@app.route('/logout')
+def logout():
+    # Elimina todas las variables de sesión
+    session.clear()
+    return redirect(url_for('login'))
 
 
 @app.route('/registro', methods = ["GET", "POST"])
