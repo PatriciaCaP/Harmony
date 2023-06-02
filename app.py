@@ -1,8 +1,14 @@
-from flask import Flask,  render_template, request, redirect, url_for, session # pip install Flask
+from flask import Flask,  render_template, request, redirect, url_for, session, flash # pip install Flask
+from flask_login import LoginManager, current_user, login_required
 from flask_mysqldb import MySQL,MySQLdb # pip install Flask-MySQLdb
+from flask_paginate import Pagination, get_page_args
+
 from os import path #pip install notify-py
 from notifypy import Notify
+import MySQLdb.cursors
 import random
+import math
+
 
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'btug0fx7ljzszoqysnwl-mysql.services.clever-cloud.com'
@@ -11,6 +17,7 @@ app.config['MYSQL_PASSWORD'] = 'wEo63IA2urQveLCLPiWl'
 app.config['MYSQL_DB'] = 'btug0fx7ljzszoqysnwl'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
+
 
 @app.route('/')
 def home():
@@ -39,15 +46,80 @@ def home():
     frase_aleatoria = random.choice(frases)
     return render_template('principal.html', frase=frase_aleatoria)
 
+"""@app.route('/perfiles', methods=['GET', 'POST'])
+def perfiles():
+    cur = mysql.connection.cursor()
+    usuarios = []
 
-@app.route('/blogs')
+    if request.method == 'POST':
+        email = request.form['email']
+        
+
+        # Ejecutar la consulta para obtener los perfiles de usuario
+        cur.execute("SELECT name, email, id_tip_usu, descripcion FROM usuarios WHERE email = %s", (email,))
+        usuarios = cur.fetchall()
+
+    cur.close()
+
+    return render_template('perfiles.html', usuarios=usuarios)"""
+
+@app.route('/perfiles', methods=['GET', 'POST'])
+def perfiles():
+    cur = mysql.connection.cursor()
+
+    if request.method == 'POST':
+        name = request.form['name']
+
+        # Ejecutar la consulta para obtener los perfiles de usuario por nombre
+        cur.execute("SELECT name, email, id_tip_usu, descripcion FROM usuarios WHERE name LIKE %s", ('%' + name + '%',))
+        usuarios = cur.fetchall()
+
+    else:
+        # Ejecutar la consulta para obtener todos los perfiles de usuario
+        cur.execute("SELECT name, email, id_tip_usu, descripcion FROM usuarios")
+        usuarios = cur.fetchall()
+
+    cur.close()
+
+    return render_template('perfiles.html', usuarios=usuarios)
+
+
+
+"""@app.route('/blogs')
 def ver_blogs():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT blogs.id_blog, blogs.titulo, blogs.contenido, blogs.fecha, usuarios.name AS autor FROM blogs INNER JOIN usuarios ON blogs.id = usuarios.id")
+    cur.execute("SELECT blogs.id_blog, blogs.titulo, blogs.contenido, blogs.fecha, usuarios.name AS autor FROM blogs INNER JOIN usuarios ON blogs.id = usuarios.id ORDER BY blogs.fecha DESC")
     blogs = cur.fetchall()
     cur.close()
 
-    return render_template('blogs.html', blogs=blogs)
+    return render_template('blogs.html', blogs=blogs)"""
+
+
+
+@app.route('/blogs')
+def ver_blogs():
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+
+    cur = mysql.connection.cursor()
+    
+    # Consulta para obtener el número total de blogs
+    cur.execute("SELECT COUNT(*) FROM blogs")
+    result = cur.fetchone()
+    total = result['COUNT(*)'] if result else 0
+    
+    # Consulta para obtener los blogs paginados
+    cur.execute("SELECT blogs.id_blog, blogs.titulo, blogs.contenido, blogs.fecha, usuarios.name AS autor FROM blogs INNER JOIN usuarios ON blogs.id = usuarios.id ORDER BY blogs.fecha DESC LIMIT %s OFFSET %s", (per_page, offset))
+    blogs = cur.fetchall()
+    cur.close()
+
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+
+    return render_template('blogs.html', blogs=blogs, pagination=pagination)
+
+
+
+
+
 
 @app.route('/escribe_blog', methods=['GET', 'POST'])
 def escribir_blog():
@@ -57,15 +129,16 @@ def escribir_blog():
     if 'email' not in session:
         return redirect(url_for('login'))
     
-    
 
     if request.method == 'POST':
+        
         titulo = request.form['titulo']
         contenido = request.form['contenido']
+        id = request.form['id']
         
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO blogs (titulo, contenido, fecha) VALUES (%s, %s, NOW())",(titulo, contenido,))
+        cur.execute("INSERT INTO blogs (titulo, contenido, fecha, id) VALUES (%s, %s, NOW(), %s)",(titulo, contenido, id))
         mysql.connection.commit()
         notificacion.title = "Publicado con éxito"
         notificacion.message="Has publicado en Harmony"
@@ -102,6 +175,7 @@ def login():
                 session['name'] = user['name']
                 session['email'] = user['email']
                 session['tipo'] = user['id_tip_usu']
+                session['descripcion'] = user['descripcion']
 
                 if session['tipo'] == 1:
                     return render_template("banda/home.html")
@@ -123,7 +197,7 @@ def login():
             return render_template("login.html")
     else:
         if 'email' in session:
-            # Si ya hay una sesión iniciada, redirigir al usuario a la página de inicio correspondiente
+
             tipo = session['tipo']
             if tipo == 1:
                 return render_template("banda/home.html")
@@ -134,45 +208,96 @@ def login():
 
         return render_template("login.html")
     
+@app.route('/perfil')
+def perfil():
+    if 'email' not in session:
+        return redirect(url_for('login'))
 
-@app.route('/logout')
+    tipo = session['tipo']
+    if tipo == 1:
+        return render_template("banda/home.html")
+    elif tipo == 2:
+        return render_template("solista/homeTwo.html")
+    elif tipo == 3:
+        return render_template("ambos/homeThree.html")
+  
+
+@app.route('/logout', methods=['GET','POST'])
 def logout():
-    # Elimina todas las variables de sesión
     session.clear()
     return redirect(url_for('login'))
 
 
-@app.route('/registro', methods = ["GET", "POST"])
+@app.route('/registro', methods=["GET", "POST"])
 def registro():
-
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM tip_usu")
     tipo = cur.fetchall()
     cur.close()
 
     notificacion = Notify()
-    
-    
 
     if request.method == 'GET':
-        return render_template("registro.html", tipo = tipo )
-    
+        return render_template("registro.html", tipo=tipo)
+
     else:
         name = request.form['name']
         email = request.form['email']
+
+        # Verificar si el nombre o correo electrónico ya existen en la base de datos
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM usuarios WHERE name = %s OR email = %s", (name, email))
+        existing_user = cur.fetchone()
+        cur.close()
+
+        if existing_user:
+            notificacion.title = "Registro Fallido"
+            notificacion.message = "El nombre o correo electrónico ya está en uso"
+            notificacion.send()
+            return redirect(url_for('registro'))
+
         password = request.form['password']
         tip = request.form['tipo']
-    
+        descripcion = request.form['descripcion']
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO usuarios (name, email, password, id_tip_usu) VALUES (%s,%s,%s,%s)", (name, email, password,tip))
+        cur.execute(
+            "INSERT INTO usuarios (name, email, password, id_tip_usu, descripcion) VALUES (%s,%s,%s,%s,%s)",
+            (name, email, password, tip, descripcion))
         mysql.connection.commit()
         notificacion.title = "Registro Exitoso"
-        notificacion.message="Ya te encuentras registrado en Harmony, por favor inicia sesión y empieza a dar a conocer tu música"
+        notificacion.message = "Ya te encuentras registrado en Harmony, por favor inicia sesión y empieza a dar a conocer tu música"
         notificacion.send()
         return redirect(url_for('login'))
+    
+@app.route('/editar_perfil', methods=['GET', 'POST'])
+@login_required  # Asegura que el usuario esté autenticado para acceder a esta ruta
+def editar_perfil():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        descripcion = request.form['descripcion']
 
+        cur = mysql.connection.cursor()
 
+        # Actualiza los datos del perfil del usuario en la base de datos
+        cur.execute("UPDATE usuarios SET name = %s, email = %s, password = %s, descripcion = %s WHERE email = %s",
+                    (name, email, password, descripcion, current_user.email))
+        mysql.connection.commit()
+        cur.close()
+
+        # Actualiza la información en la sesión del usuario
+        session['name'] = name
+        session['email'] = email
+        session['descripcion'] = descripcion
+
+        flash('Perfil actualizado correctamente', 'success')
+        return redirect(url_for('perfil'))
+    else:
+        return render_template('editar_perfil.html')
+
+    
 if __name__ == '__main__':
     app.secret_key = "clavedepatricia"
     app.run(debug=True)

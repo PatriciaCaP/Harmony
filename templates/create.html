@@ -11,29 +11,41 @@
     <link rel="icon" href="/static/img/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="/static/img/favicon.png" type="image/x-icon">
 </head>
-<body>
+<body class="banda">
     <nav class="menu">
-        <a href="/"><label for="" class="logo">HARMONY</label></a>
+        <a href="/"><label for="" class="harmony">HARMONY</label></a>
         <ul class="barraInicio">
-            <li> <a href="{{ url_for('logout') }}">Logout</a></li>
+            <li>
+                <a href="{{ url_for('perfiles') }}">Perfil</a>
+            </li>
+            <li>
+                <a href="{{ url_for('ver_blogs') }}">Publicaciones</a>
+            </li>
+            <li>
+                <a href="{{ url_for('perfil') }}">{{ session.name }}</a>
+            </li>
             <li>
                 {% if 'email' in session %}
-                <form action="{{ url_for('logout') }}" method="POST">
-                    <button type="submit" class="btn btn-primary">{{ session.name }}</button>
+                <form action="{{ url_for('perfil') }}" method="POST">
+                 <li> <a href="{{ url_for('logout') }}">Logout</a></li>
                 </form>
-            </li>
-                   
+            </li>     
                {% endif %}
         </ul>
  </nav>
-    <h1>Escribe aquí</h1>
+ <br>
     
-    <form action="{{ url_for('escribir_blog') }}" method="POST">
-        <label for="titulo">Título:</label><br>
-        <input type="text" id="titulo" name="titulo"><br><br>
-        <label for="contenido">Contenido:</label><br>
-        <textarea id="contenido" name="contenido"></textarea><br><br>
-        <input type="submit" value="Publicar">
+    <br>
+    <br>
+    <br>
+    <form class="newformb" action="{{ url_for('escribir_blog') }}" method="post">
+        <h3 >¿Que quieres decir {{ session.name }} ?</h3>
+        <br>
+        <input type="text" name="titulo" placeholder="Título">
+    
+        <textarea name="contenido" placeholder="Escribe aquí" cols="30" rows="10"></textarea>
+    <br>
+        <input type="submit" name="submit">
     </form>
 </body>
 </html>

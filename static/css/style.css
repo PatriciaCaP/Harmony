@@ -12,7 +12,6 @@
     align-items: center;
     color: white;
     font-weight: bold;
-    font-family:'Courier New', Courier, monospace;
   }
 
 a{
@@ -23,16 +22,34 @@ a{
     font-family:'Courier New', Courier, monospace;
     font-weight: bold;
     text-align: center;
-  }
-
-.logo{
     cursor: pointer;
     font-size: 34px;
     padding: 0 80px;
-    font-weight: bold;
     color: white;
-    
+  }
+
+.harmony-black {
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    font-size: 34px;
+    padding: 0 80px;
+    color: rgb(0, 0, 0);    
 }
+.harmony-black-h2 {
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+
+}
+
+.separador {
+    height: 3px;
+    border-top: 3px double #000;
+    margin: 20px 0;
+  }
+  
+  
 
 .barraInicio{
     display: flex;
@@ -58,14 +75,77 @@ a{
 }
 
 .form{
-    width: 300px;
-    height: 450px;
+ 
     box-sizing: border-box;
     padding: 70px 0px;
     border: 0px solid black;
     text-align: center;
     margin-left: 21%;
+    margin: 5vh auto;
+	width: 320px;
+	color: rgb(0, 0, 0);
 }
+
+.newform {
+    box-sizing: border-box;
+    padding: 70px 0px;
+    border: 0px solid black;
+    text-align: center;
+    margin-left: 21%;
+    margin: 5vh auto;
+	width: 320px;
+	color: rgb(0, 0, 0);
+}
+
+.newformb {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgb(50, 48, 48);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .newformb h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #f5f5f5;
+  }
+  
+  .newformb input[type="text"],
+  .newformb textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .newformb textarea {
+    height: 150px;
+  }
+  
+  .newformb input[type="submit"] {
+    display: block;
+    margin: 0 auto;
+    width: fit-content;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .newformb input[type="submit"]:hover {
+    background-color: #F1F1F1;
+  }
+  
+  .newformb input[type="submit"]:focus {
+    outline: none;
+  }
+  
+  
 
 .form label{
     margin: 0;
@@ -169,12 +249,14 @@ body:before {
     position: fixed;
     top: 0px;
     left: 0;
-    background-image: url('/static/img/banda.jpg');
+    background: linear-gradient(to right, #7a787e, #ffffff);
     background-size: cover;
     background-position: center;
     opacity: 0.6;
     z-index: -1;
 }
+
+
 
 .solista:before {
     content: "";
@@ -212,3 +294,115 @@ body:before {
     height: 100vh;
     background-color: #f5f5f5;
   }
+
+
+.blog {
+    margin: 5vh auto;
+	width: 50%;
+	height: 22vh;
+	border: 2px solid black;
+	border-radius: 10px;
+    font-style: italic;
+}
+
+.post-title{
+	font-size: 2.5rem;
+	margin: 10px auto 0px;
+	padding: 10px;
+
+}
+.date{
+	font-size: medium;
+	padding-top: 0;
+	color: rgb(19, 19, 19);
+}
+p{
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 0px;
+    font-size: large;
+
+}
+
+.delete-button{
+	margin: 0;
+	padding: 0;
+	margin-top: 5px;
+	margin-left: 10px;
+}
+
+
+
+h2{
+	font-size: 3rem;
+	text-align: center;
+	margin-top: 5vh;
+}
+
+.newform{
+	margin: 5vh auto;
+	width: 320px;
+	color: rgb(0, 0, 0);
+
+}
+
+input{
+	padding: 10px;
+	font-size: 1.6rem;
+}
+
+.login-form input{
+	display: block;
+	margin-top: 25px;
+	width: 100%;
+	border: 2px solid #131c27;
+	border-radius: 5px;
+}
+.login-form input[type="submit"]{
+
+	border: none;
+	background-color: #131c27;
+	color: white;
+	font-size: 1.8rem;
+}
+
+li{
+
+	margin-top: 0;
+	margin-left: 15px;
+	color: rgb(0, 0, 0);
+}
+
+textarea{
+	display: block;
+	margin-top: 25px;
+	border: 2px solid #131c27;
+	width: 100%;
+	border-radius: 5px;
+	font-size: 1.8rem;
+	font-family: sans-serif;
+
+}
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pagination .page-item .page-link {
+    background-color: rgb(40, 36, 36);
+    color: white;
+    text-align: center;
+  }
+  .small-input {
+    width: 200px;
+    height: 30px;
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+.notamusical {
+    font-size:24px;
+}

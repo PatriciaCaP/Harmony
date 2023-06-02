@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+{% block content %}
+    <h1>Editar Usuario</h1>
+    <form class="newform" action="{{ url_for('editar_usuario', id=usuario.id) }}" method="post">
+        <input type="hidden" name="id" value="{{ usuario.id }}">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" value="{{ usuario.name }}" required>
+        <br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ usuario.email }}" required>
+        <br><br>
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" value="{{ usuario.password }}" required>
+        <br><br>
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" required>{{ usuario.descripcion }}</textarea>
+        <br><br>
+        <button type="submit">Guardar Cambios</button>
+    </form>
+{% endblock %}
+

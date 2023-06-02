@@ -7,9 +7,9 @@
     <div class="container-fluid row m-0 vh-100 justify-content-end align-items-center">
          <div class="card shadow w-50">
             <div class="card-body">
-             <form action="/registro" method="POST">
+             <form class="newform" action="/registro" method="POST">
 
-                <h1 class="harmony">HARMONY</h1><br>
+                <h1 class="harmony-black">HARMONY</h1><br>
 
                     <input type="text" placeholder="Nombre" class="form-control mb-3" name="name">
               
@@ -22,6 +22,8 @@
                     </select>
            
                     <input type="email" placeholder="Correo electrónico" class="form-control mb-3" name="email">
+
+                    <input type="text" placeholder="¡Presentate!" class="form-control mb-3" name="descripcion">
         
                     <input type="password" placeholder="Contraseña" class="form-control mb-3" name="password">
                
@@ -29,8 +31,9 @@
             
 
             </form>
+              <p class="text-center"> ¿Tienes cuenta? <td><a href="/login">Iniciar sesión</a></td></p>
             </div>
-            <p class="text-center"> ¿Tienes cuenta? <td><a href="/login">Iniciar sesión</a></td></p>
+          
            </div>
            </div>
            </main> 
