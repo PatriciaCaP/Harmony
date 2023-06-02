@@ -1,7 +1,7 @@
 from flask import Flask,  render_template, request, redirect, url_for, session, flash # pip install Flask
-from flask_login import LoginManager, current_user, login_required
 from flask_mysqldb import MySQL,MySQLdb # pip install Flask-MySQLdb
 from flask_paginate import Pagination, get_page_args
+import datetime
 
 from os import path #pip install notify-py
 from notifypy import Notify
@@ -94,8 +94,6 @@ def ver_blogs():
 
     return render_template('blogs.html', blogs=blogs)"""
 
-
-
 @app.route('/blogs')
 def ver_blogs():
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
@@ -115,11 +113,6 @@ def ver_blogs():
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
 
     return render_template('blogs.html', blogs=blogs, pagination=pagination)
-
-
-
-
-
 
 @app.route('/escribe_blog', methods=['GET', 'POST'])
 def escribir_blog():
@@ -176,6 +169,7 @@ def login():
                 session['email'] = user['email']
                 session['tipo'] = user['id_tip_usu']
                 session['descripcion'] = user['descripcion']
+                session['id'] = user['id'] 
 
                 if session['tipo'] == 1:
                     return render_template("banda/home.html")
@@ -270,32 +264,84 @@ def registro():
         notificacion.send()
         return redirect(url_for('login'))
     
-@app.route('/editar_perfil', methods=['GET', 'POST'])
-@login_required  # Asegura que el usuario esté autenticado para acceder a esta ruta
-def editar_perfil():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
-        descripcion = request.form['descripcion']
+    
+@app.route('/borrar_blog/<int:id_blog>', methods=['GET', 'POST'])
+def borrar_blog(id_blog):
+    cur = mysql.connection.cursor()
 
-        cur = mysql.connection.cursor()
+    # Obtener el autor del blog
+    cur.execute("SELECT u.name as autor FROM blogs b JOIN usuarios u ON b.id = u.id WHERE b.id_blog = %s", (id_blog,))
+    blog = cur.fetchone()
 
-        # Actualiza los datos del perfil del usuario en la base de datos
-        cur.execute("UPDATE usuarios SET name = %s, email = %s, password = %s, descripcion = %s WHERE email = %s",
-                    (name, email, password, descripcion, current_user.email))
+    if blog and blog['autor'] == session['name']:
+        # Si el autor coincide con el usuario actual, se permite borrar el blog
+        cur.execute("DELETE FROM blogs WHERE id_blog = %s", (id_blog,))
         mysql.connection.commit()
+
+    cur.close()
+
+    return redirect(url_for('ver_blogs'))
+
+
+@app.route('/editar_blog/<int:id_blog>', methods=['GET', 'POST'])
+def editar_blog(id_blog):
+    cur = mysql.connection.cursor()
+
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        contenido = request.form['contenido']
+        fecha = datetime.datetime.now()
+
+        cur.execute("UPDATE blogs SET titulo = %s, contenido = %s, fecha = %s WHERE id_blog = %s",
+                    (titulo, contenido, fecha, id_blog))
+        mysql.connection.commit()
+
+        flash('El blog ha sido actualizado exitosamente', 'success')
+
+        cur.execute("SELECT * FROM blogs WHERE id_blog = %s", (id_blog,))
+        blog = cur.fetchone()
+
         cur.close()
 
-        # Actualiza la información en la sesión del usuario
-        session['name'] = name
-        session['email'] = email
-        session['descripcion'] = descripcion
+        return redirect(url_for('ver_blogs'))
 
-        flash('Perfil actualizado correctamente', 'success')
-        return redirect(url_for('perfil'))
     else:
-        return render_template('editar_perfil.html')
+        cur.execute("SELECT * FROM blogs WHERE id_blog = %s", (id_blog,))
+        blog = cur.fetchone()
+        cur.close()
+
+        return render_template('editar_blog.html', blog=blog)
+
+@app.route('/editar_usuario/<int:id>', methods=['GET', 'POST'])
+def editar_usuario(id):
+    cur = mysql.connection.cursor()
+
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        name = request.form['name']
+        email = request.form['email']
+        descripcion = request.form['descripcion']
+
+        # Actualizar los datos del usuario en la base de datos
+        cur.execute("UPDATE usuarios SET name = %s, email = %s, descripcion = %s WHERE id = %s",
+                    (name, email, descripcion, id))
+        mysql.connection.commit()
+
+        flash('Has modificado tus datos con éxito', 'success')
+
+        # Redireccionar a la página de perfil
+        return redirect(url_for('perfil'))
+
+    else:
+        # Obtener los datos del usuario de la base de datos
+        cur.execute("SELECT * FROM usuarios WHERE id = %s", (id,))
+        usuario = cur.fetchone()
+
+        # Cerrar la conexión con la base de datos
+        cur.close()
+
+        # Renderizar la plantilla 'editar_usuario.html' y pasar la variable 'usuario'
+        return render_template('editar_usuario.html', usuario=usuario)
 
     
 if __name__ == '__main__':
