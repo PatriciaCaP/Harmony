@@ -42,6 +42,7 @@
  <section class="blog-container">
 <br>
 <br>
+<h2>Publicaciones</h2>
     {% for blog in blogs %}
     <div class="blog">
         <h3 class="post-title">{{ blog.titulo }}</h3>
@@ -49,10 +50,14 @@
         <p>{{ blog.contenido }}</p>
         {% if session.name == blog.autor %}
         <a href="{{ url_for('borrar_blog', id_blog=blog.id_blog) }}" onclick="return confirm('¿Estás seguro de que quieres borrar este blog?')" class="delete-link">¿Quieres eliminar tu publicación?</a> o <a href="{{ url_for('editar_blog', id_blog=blog.id_blog) }}" class="edit-link">Editar</a>
-        
-
+         {% endif %}
+         
+        {% if 'name' in session and session['name'] == 'admin' %}
+        <form action="{{ url_for('borrar_blog', id_blog=blog.id_blog) }}" method="POST">
+            <button type="submit" class="btn btn-danger">Borrar</button>
+        </form>
         {% endif %}
-
+    
     </div>
     {% endfor %}
 </section>

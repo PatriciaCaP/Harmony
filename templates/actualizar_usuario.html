@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Actualizar Usuario</title>
+</head>
+<body>
+    <h1>Actualizar Usuario</h1>
+    <form action="" method="POST" >
+        <label for="name">Nombre:</label>
+        <input type="text" name="name" value="{{ usuario.name }}"><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" value="{{ usuario.email }}"><br>
+
+        <label for="id_tip_usu">ID Tipo Usuario:</label>
+        <input type="text" name="id_tip_usu" value="{{ usuario.id_tip_usu }}"><br>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion">{{ usuario.descripcion }}</textarea><br>
+
+        <input type="submit" value="Actualizar">
+    </form>
+</body>
+</html>
+

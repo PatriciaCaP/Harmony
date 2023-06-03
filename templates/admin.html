@@ -11,16 +11,11 @@
     <link rel="icon" href="/static/img/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="/static/img/favicon.png" type="image/x-icon">
 </head>
-<body class="banda">
+<body>
     <nav class="menu">
         <a href="/"><label for="" class="harmony">HARMONY</label></a>
         <ul class="barraInicio">
-            <li>
-                <a href="{{ url_for('perfiles') }}">Perfil</a>
-            </li>
-            <li>
-                <a href="{{ url_for('ver_blogs') }}">Publicaciones</a>
-            </li>
+
             <li>
                 <a href="{{ url_for('perfil') }}">{{ session.name }}</a>
             </li>
@@ -29,24 +24,39 @@
                 <form action="{{ url_for('perfil') }}" method="POST">
                  <li> <a href="{{ url_for('logout') }}">Logout</a></li>
                 </form>
-            </li>     
-               {% endif %}
+            </li>       
+            
+            {% endif %}
+
         </ul>
- </nav>
- <br>
-    
-    <br>
-    <br>
-    <br>
-    <form class="newformb" action="{{ url_for('escribir_blog') }}" method="post">
-        <h3 >¿Que quieres decir {{ session.name }} ?</h3>
-        <br>
-        
-        <input type="text" name="titulo" placeholder="Título">
-        <textarea name="contenido" placeholder="Escribe aquí" cols="30" rows="10"></textarea>
-        <input type="hidden" name="id" id="id" value="{{ id }}">
-    <br>
-        <input type="submit" name="submit">
-    </form>
+    </nav>
+
+    <main class="d-flex">
+        <div class="container-fluid row m-0 vh-100 justify-content-end align-items-center">
+            <div class="card shadow w-50">
+                <div class="card-body">
+                    <form   method="POST">
+                        <h3 class="harmony-black">¡Bienvenido {{ session.name }}&#x1F6E0;!</h3><br>
+                        <h5 class="harmony-black">Administrador</h5><br>
+                        <strong>Email:</strong> {{ session.email }}<br>
+                        <strong>Descripción:</strong> {{ session.descripcion }}<br>
+                        <br>
+                    
+                        <p> <h5>¿Qué quieres hacer? :</h5>
+                            <ul>
+                                <li><a href="/blogs">Administrar publicaciones</a></li>
+                                <li><a href="/adminPerfiles">Administrar perfiles</a></li>
+                            </ul>
+                            <hr>
+                        </p>
+
+                       
+                </form>
+                    
+                </div>
+            </div>
+        </div>
+
+    </main>
 </body>
-</html>
+</html> 
