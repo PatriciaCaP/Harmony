@@ -184,12 +184,12 @@ def perfiles():
         name = request.form['name']
 
         # Ejecutar la consulta para obtener los perfiles de usuario por nombre
-        cur.execute("SELECT name, email, id_tip_usu, descripcion FROM usuarios WHERE name LIKE %s", ('%' + name + '%',))
+        cur.execute("SELECT name,email,nom_tip_usu,descripcion FROM usuarios NATURAL JOIN tip_usu WHERE name LIKE %s", ('%' + name + '%',))
         usuarios = cur.fetchall()
 
     else:
         # Ejecutar la consulta para obtener todos los perfiles de usuario
-        cur.execute("SELECT name, email, id_tip_usu, descripcion FROM usuarios")
+        cur.execute("SELECT name,email,nom_tip_usu,descripcion FROM usuarios NATURAL JOIN tip_usu")
         usuarios = cur.fetchall()
      
 
