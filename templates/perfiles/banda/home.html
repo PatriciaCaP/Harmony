@@ -1,0 +1,37 @@
+{% extends 'base_perfil.html' %} 
+{% block content %}
+
+    <main class="d-flex">
+        <div class="container-fluid row m-0 vh-100 justify-content-end align-items-center">
+            <div class="card shadow w-50">
+                <div class="card-body">
+                    <form   method="POST">
+                        <h3 class="harmony-black">¡Hola! {{ session.name }}</h3><br>
+                        <h5 class="harmony-black">Banda&#127928;</h5><br>
+                        <strong>Email:</strong> {{ session.email }}<br>
+                        <strong>Descripción:</strong> <a href="{{ session.descripcion }}">{{ session.descripcion }}</a><br>
+                        <br>
+                    
+                        <p> <h5>¿Qué quieres hacer? :</h5>
+                            <ul>
+                                <li><a  href="/blogs" class="text-dark" >Ver publicaciones</a></li>
+                                <li><a href="/escribe_blog" class="text-dark">Publicar</a></li>
+                              
+                                
+                            </ul>
+                            <a href="{{ url_for('editar_perfil') }}" class="btn btn-primary btn-dark">Editar perfil</a>
+                            <hr>
+                      
+                                    
+                      
+                        </p>
+
+                       
+                </form>
+                   
+                </div>
+            </div>
+        </div>
+
+    </main>
+    {% endblock %}

@@ -37,27 +37,32 @@
                {% endif %}
         </ul>
  </nav>
-    <h1>Perfiles de Usuarios</h1>
+ <br>
+<form class="newformb" method="POST" action="">
+    <h3>Perfiles de Usuarios</h3>
     <table>
         <tr>
-            <th>Nombre</th>
-            <th>Acciones</th>
+            <br>
+            <td style="padding: 10px;"><h3>ID</h3></td>
+            <td style="padding: 10px;"><h3>Nombre</h3></td>
+            <td style="padding: 10px;"><h3>Acciones</h3></td>
         </tr>
         {% for usuario in usuarios %}
         <tr>
-            <td>{{ usuario.id}}</td>
-            <td>{{ usuario.name}}</td>
+            <td style="padding: 10px;"><h3>{{ usuario.id }}</h3></td>
+            <td style="padding: 10px;"><h3>{{ usuario.name }}</h3></td>
             <td>
-                <form method="POST" action="{{ url_for('eliminar_usuario', id=usuario.id) }}">
-                    <input type="submit" value="Eliminar">
+                <form action="{{ url_for('eliminar_usuario', id=usuario.id) }}" method="POST">
+                    <button type="submit" class="btn btn-danger" style="margin-right: 20px;">Borrar</button>
+                    <a href="{{ url_for('actualizar_usuario', id=usuario.id) }}" class="btn btn-primary">Editar</a>
                 </form>
-                <a href="{{ url_for('actualizar_usuario', id=usuario.id) }}" class="edit-link">Editar</a>
-                  
-                
             </td>
-            
         </tr>
         {% endfor %}
     </table>
+</form>
+
+    
+
 </body>
 </html>

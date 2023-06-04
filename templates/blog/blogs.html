@@ -49,7 +49,7 @@
         <p class="date">Publicado por {{ blog.autor }} el día {{ blog.fecha.strftime('%d/%m/%Y %H:%M:%S') }}</p>
         <p>{{ blog.contenido }}</p>
         {% if session.name == blog.autor %}
-        <a href="{{ url_for('borrar_blog', id_blog=blog.id_blog) }}" onclick="return confirm('¿Estás seguro de que quieres borrar este blog?')" class="delete-link">¿Quieres eliminar tu publicación?</a> o <a href="{{ url_for('editar_blog', id_blog=blog.id_blog) }}" class="edit-link">Editar</a>
+        <a href="{{ url_for('borrar_blog', id_blog=blog.id_blog) }}"  onclick="return confirm('¿Estás seguro de que quieres borrar esta publicación?')" class="delete-link">¿Quieres eliminar tu publicación?</a> o <a href="{{ url_for('editar_blog', id_blog=blog.id_blog) }}" class="text-purple">Editar</a>
          {% endif %}
          
         {% if 'name' in session and session['name'] == 'admin' %}

@@ -15,9 +15,9 @@
     <nav class="menu">
         <a href="/"><label for="" class="harmony">HARMONY</label></a>
         <ul class="barraInicio">
-            
+
             <li>
-                <a href="{{ url_for('perfiles') }}">Perfil</a>
+                <a href="{{ url_for('perfiles') }}"> Perfiles</a>
             </li>
 
             <li>
@@ -35,33 +35,9 @@
         </ul>
     </nav>
 
-    <main class="d-flex">
-        <div class="container-fluid row m-0 vh-100 justify-content-end align-items-center">
-            <div class="card shadow w-50">
-                <div class="card-body">
-                    <form   method="POST">
-                        <h3 class="harmony-black">¡Hola! {{ session.name }}</h3><br>
-                        <h5 class="harmony-black">Solista</h5><br>
-                        <strong>Email:</strong> {{ session.email }}<br>
-                        <strong>Descripción:</strong> {{ session.descripcion }}<br>
-                        <br>
-                    
-                        <p> <h5>¿Qué quieres hacer? :</h5>
-                            <ul>
-                                <li><a href="/blogs">Ver publicaciones</a></li>
-                                <li><a href="/escribe_blog">Publicar</a></li>
-                            </ul>
-                            <hr>
-                            <a href="/editar_usuario" class="edit-link">Editar</a>
-                        </p>
+{% block content %}
+    
+{% endblock %}
 
-                       
-                </form>
-                    
-                </div>
-            </div>
-        </div>
-
-    </main>
 </body>
 </html> 

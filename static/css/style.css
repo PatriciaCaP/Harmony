@@ -303,6 +303,13 @@ body:before {
 	border: 2px solid black;
 	border-radius: 10px;
     font-style: italic;
+    background-color: white;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: auto;
+    white-space: normal;
 }
 
 .post-title{
@@ -405,4 +412,8 @@ textarea{
 
 .notamusical {
     font-size:24px;
+}
+
+.act {
+    color: white;
 }
